@@ -1,0 +1,2 @@
+# GreenhousePi
+The basic idea is to build a solar power source for the Raspberry Pi located in a greenhouse , to connect the PI to sensors, connect it via WiFi, log all data to a RethinkDB database and built an application to view the data and influence some actors connected to the Pi (fans) to controll temperature and humditiy in the greenhouse. Th software will be built not based on polling principle but on change feeds (as provided by RethinkDB) to trigger actions by other components (e.g. a Refresh of data shown). The communication will be based on Tornado / WebSockets. 
