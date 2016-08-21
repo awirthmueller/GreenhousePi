@@ -60,13 +60,15 @@ class DS18B20_Adapter:
     		temperature = float(stringvalue[2:]) / 1000
 
     		# Temperatur ausgeben
-    		rueckgabewert = '%6.2f' % temperature
+    		#rueckgabewert = '%6.2f' % temperature
+		rueckgabewert = temperature
     		return(rueckgabewert)
         def readJSON(self):
                 temp = self.read()
                 timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 d_temp = 	{'hostname':HOSTNAME,
              			'type':self.SENSOR_TYPE,
+				"measure_temp": "Celsius",
              			'sensorid':self.sensor_id,
              			'temp':temp,
              			'datetime':str(timestamp)}

@@ -53,7 +53,7 @@ logging.info(MODULE_NAME+": db exists")
 logging.info(MODULE_NAME+": Checking to see if table %s exists",'observations')
 if 'observations2' not in list(r.table_list().run(conn)):
     logging.info(MODULE_NAME+": table does not exist, creating...")
-    r.table_create("observations2").run(conn)
+    r.table_create("observations").run(conn)
 logging.info(MODULE_NAME+": table exists")
 
 timezone = time.strftime("%z")
@@ -64,40 +64,47 @@ bmp = BMP_Adapter(350,'p_0001')
 
 d_pressure = bmp.readJSON()
 
-print(d_pressure)
+#print(d_pressure)
 
 #measure temperature sensor 1
 soil_temperature = DS18B20_Adapter('t_0001','28-04165b7853ff')
 d_temp1 =  soil_temperature.readJSON()
-print(d_temp1)
+#print(d_temp1)
 
 #measure temperature sensor 2
 outside_temperature = DS18B20_Adapter('t_0002','28-0316603aefff')
 d_temp2 =  outside_temperature.readJSON()
-print(d_temp2)
+#print(d_temp2)
 
 plant_temperature = DS18B20_Adapter('t_0003','28-0316603ccdff')
 d_temp3 =  plant_temperature.readJSON()
-print(d_temp3)
+#print(d_temp3)
 
 roof_temperature = DS18B20_Adapter('t_0004','28-04165b7988ff')
 d_temp4 =  roof_temperature.readJSON()
-print(d_temp4)
+#print(d_temp4)
 
 
 
 #get sunrise and sunset forcast
 sunforcast = Sunrise_Adapter('s_0001','49.472816','11.399599')
 d_sun = sunforcast.readJSON() 
-print(d_sun)
+#print(d_sun)
 
 d_observation = {'pressure':[d_pressure],
-		 'temperature':[d_temp1,d_temp2]
+		 'temperature':[d_temp1,d_temp2,d_temp3,d_temp4],
+		 'timestamp': str(datetime.now(reql_tz)),
+		 'type':'sensors' 
                 }
 
+d_sunset = {'sunset':[d_sun],
+            'timestamp': str(datetime.now(reql_tz)),
+	    'type':'sunset'
+	   }
 logging.info(MODULE_NAME+": measurement %s",str(d_observation))
 
-#r.table("observations2").insert(d_observation).run(conn, durability='soft') #Soft durability since losing one observation wouldn't be the end of the world.
+r.table("observations").insert(d_observation).run(conn, durability='soft') #Soft durability since losing one observation wouldn't be the end of the world.
+#r.table("observations").insert(d_sunset).run(conn, durability='soft')
 conn.close()
 logging.info(MODULE_NAME+": measurements successfully written to db")
 logging.info(MODULE_NAME+": ***************** End ***************** ")

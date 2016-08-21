@@ -86,9 +86,10 @@ class Sunrise_Adapter:
                 d_sunset = 	{'hostname':HOSTNAME,
              			'type':self.SENSOR_TYPE,
              			'sensorid':self.sensor_id,
-             		        'sunset':sunset,
+             		        'latitude':self.LAT,
+				'longtitude':self.LONG, 
+				'sunset':sunset,
 				'sunrise':sunrise,	
-				'measure_temp':self.MEASURE_T,
              			'datetime':str(timestamp)}
 		return d_sunset
 	
