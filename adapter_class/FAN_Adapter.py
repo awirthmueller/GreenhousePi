@@ -20,6 +20,11 @@
 # THE SOFTWARE.
 
 import logging
+import time
+import datetime
+from datetime import datetime
+
+
 from config import HOSTNAME
 import RPi.GPIO as GPIO
 
@@ -32,7 +37,7 @@ logging.basicConfig(
     )
 
 class FAN_Adapter:
-
+	ACTOR_TYPE = 'Fan'
 	def __init__(self, gpio, actor_id):
                 logging.info(MODULE_NAME+ ": constructor start")
                 self.actor_id = actor_id
@@ -40,13 +45,27 @@ class FAN_Adapter:
 		GPIO.setwarnings(False)
                 GPIO.setmode(GPIO.BOARD)
                 GPIO.setup(gpio, GPIO.OUT)
+		self.status = GPIO.input(gpio)
 		logging.info(MODULE_NAME +": constructor exit")
 
         def set_on(self):
 		GPIO.output(self.gpio, GPIO.HIGH)
+		self.status = GPIO.input(self.gpio)
 		logging.info(MODULE_NAME+ ": fan on")
 
 	def set_off(self):
 		GPIO.output(self.gpio, GPIO.LOW)
+		self.status = GPIO.input(self.gpio)
+
 		logging.info(MODULE_NAME+ ": fan off")
+
+        def readJSON(self):
+                self.status = GPIO.input(self.gpio)      
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                d_fan     =    {'hostname':HOSTNAME,
+                                'type':self.ACTOR_TYPE,
+                                'actorid':self.actor_id,
+                                'state':self.status,
+                                'datetime':str(timestamp)}
+                return d_fan
 
