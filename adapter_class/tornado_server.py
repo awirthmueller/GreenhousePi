@@ -21,6 +21,7 @@ from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 from config import * 
 
 from Action_Trigger import Action_Trigger
+from FAN_Adapter import FAN_Adapter
 
 
 define("port", default=8888, help="run on the given port", type=int)
@@ -131,6 +132,14 @@ def send_initial_data(client):
 	    feed =  yield r.table("observations").order_by(r.desc('timestamp')).limit(200).order_by(r.asc('timestamp')).run(tconn) 
             for document in feed:
             	client.write_message(document) 
+
+	    fan = FAN_Adapter(16,'f_0001')
+            d_fan = fan.readJSON()
+            d_observation = {'fan':[d_fan],
+                             'timestamp': str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                             'type':'actors'
+                             }
+
 	    tconn.close()
             logging.info("send_initial_data::leaving")
 	except:

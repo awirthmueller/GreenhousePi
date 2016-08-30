@@ -21,6 +21,10 @@
 # THE SOFTWARE.
 
 from Action_Monitor import Action_Monitor
+import time
+
+# wait 60 secons before starting the monitor 
+time.sleep(60)
 
 monitor = Action_Monitor()
 
