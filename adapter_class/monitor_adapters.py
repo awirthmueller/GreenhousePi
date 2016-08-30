@@ -86,7 +86,7 @@ d_temp4 =  roof_temperature.readJSON()
 #print(d_temp4)
 
 lumen_sensor =  TSL2591_Adapter('lx_0001')
-d_luminosity = sensor.readJSON()
+d_luminosity = lumen_sensor.readJSON()
 
 #print(d_luminosity)
 
