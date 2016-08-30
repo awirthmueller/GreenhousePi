@@ -37,7 +37,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
-    filename='/home/pi/sensors/log/adapter_log.log'
+    filename='/home/pi/GreenMon/log/adapter_log.log'
     )
 logging.info(MODULE_NAME+": ***************** Start ***************** ")
 
@@ -46,12 +46,12 @@ logging.info(MODULE_NAME+": Successful DB connection")
 
 logging.info(MODULE_NAME+": Checking if db %s exists",DB_NAME)
 if DB_NAME not in list(r.db_list().run(conn)):
-    logging.info("BMP085: db does not exist, creating...")
+    logging.info(MODULE_NAME+"db does not exist, creating...")
     r.db_create(DB_NAME).run(conn)
 logging.info(MODULE_NAME+": db exists")
 
 logging.info(MODULE_NAME+": Checking to see if table %s exists",'observations')
-if 'observations2' not in list(r.table_list().run(conn)):
+if 'observations' not in list(r.table_list().run(conn)):
     logging.info(MODULE_NAME+": table does not exist, creating...")
     r.table_create("observations").run(conn)
 logging.info(MODULE_NAME+": table exists")

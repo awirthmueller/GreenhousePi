@@ -35,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
-    filename='/home/pi/sensors/log/adapter_log.log'
+    filename='/home/pi/GreenMon/log/adapter_log.log'
     )
 
 class BMP_Adapter:

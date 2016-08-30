@@ -35,7 +35,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
-    filename='/home/pi/sensors/log/adapter_log.log'
+    filename='/home/pi/GreenMon/log/adapter_log.log'
     )
 
 class Action_Trigger:
@@ -52,7 +52,7 @@ class Action_Trigger:
 		logging.info(MODULE_NAME+": Checking if db %s exists",DB_NAME)
 		if DB_NAME not in list(r.db_list().run(conn)):
     			logging.info(MODULE_NAME+": db does not exist, creating...")
-    			r.db_create(DB_NAME).run(conn)
+    			yield r.db_create(DB_NAME).run(conn)
 		logging.info(MODULE_NAME+": db exists")
 
 		logging.info(MODULE_NAME+": Checking to see if table %s exists",TABLE_NAME)

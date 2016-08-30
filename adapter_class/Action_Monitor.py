@@ -36,7 +36,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M',
-    filename='/home/pi/sensors/log/adapter_log.log'
+    filename='/home/pi/GreenMon/log/adapter_log.log'
     )
 
 from FAN_Adapter import FAN_Adapter
@@ -117,13 +117,22 @@ class Action_Monitor:
 			 if actionvalue == 'On':
 				fan.set_on()
 				d_fan = fan.readJSON()
-				r.table("observations").insert(d_fan).run(conn, durability='soft')
+				d_observation = {'fan':[d_fan],
+                 				 'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                 				 'type':'actors'
+                				}
+
+				r.table("observations").insert(d_observation).run(conn, durability='soft')
 				logging.info(MODULE_NAME+"::action fan on for " + actortype + " with id " + actorid + " executed")
 
 			 elif actionvalue == 'Off':
 				fan.set_off()
 				d_fan = fan.readJSON()
-				r.table("observations").insert(d_fan).run(conn, durability='soft')
+				d_observation = {'fan':[d_fan],
+                                                 'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                                                 'type':'actors'
+                                                }
+				r.table("observations").insert(d_observation).run(conn, durability='soft')
 				logging.info(MODULE_NAME+"::action fan off for " + actortype + " with id " + actorid + " executed")  
 
 		elif actorid == 'l_0001':
@@ -132,12 +141,21 @@ class Action_Monitor:
 			if actionvalue == 'On':
 				led.set_on()
 				d_led = led.readJSON()
-				r.table("observations").insert(d_led).run(conn, durability='soft')
+                                d_observation = {'led':[d_led],
+                                                 'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                                                 'type':'actors'
+                                                }
+
+				r.table("observations").insert(d_observation).run(conn, durability='soft')
 				logging.info(MODULE_NAME+"::action led on for " + actortype + " with id " + actorid + " executed")
 			elif actionvalue == 'Off':			
                                 led.set_off()
-                                d_led = led.readJSON()
-                                r.table("observations").insert(d_led).run(conn, durability='soft')
+                                d_led = led.readJSON()	
+                                d_observation = {'led':[d_led],
+                                                 'timestamp': str(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
+                                                 'type':'actors'
+                                                }
+                                r.table("observations").insert(d_observation).run(conn, durability='soft')
                                 logging.info(MODULE_NAME+"::action led off for " + actortype + " with id " + actorid + " executed")
 
                 elif actorid == 'l_0002':
