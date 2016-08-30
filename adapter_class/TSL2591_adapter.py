@@ -39,7 +39,7 @@ logging.basicConfig(
     )
 
 class TSL2591_Adapter:
-        SENSOR_TYPE = "light"
+        SENSOR_TYPE = "luminosity"
         MEASURE_L="lux"
 
      
