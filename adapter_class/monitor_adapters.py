@@ -30,6 +30,7 @@ from config import HOSTNAME, DB_HOST, DB_PORT, DB_NAME
 from BMP_adapter import BMP_Adapter
 from DS18B20_adapter import DS18B20_Adapter
 from Sunrise_Adapter import Sunrise_Adapter
+from  TSL2591_adapter import  TSL2591_Adapter
 
 MODULE_NAME = 'Readall_apaters'
 import logging
@@ -84,7 +85,10 @@ roof_temperature = DS18B20_Adapter('t_0004','28-04165b7988ff')
 d_temp4 =  roof_temperature.readJSON()
 #print(d_temp4)
 
+lumen_sensor =  TSL2591_Adapter('lx_0001')
+d_luminosity = sensor.readJSON()
 
+#print(d_luminosity)
 
 #get sunrise and sunset forcast
 sunforcast = Sunrise_Adapter('s_0001','49.472816','11.399599')
@@ -93,6 +97,7 @@ d_sun = sunforcast.readJSON()
 
 d_observation = {'pressure':[d_pressure],
 		 'temperature':[d_temp1,d_temp2,d_temp3,d_temp4],
+		 'luminosity':[d_luminosity],
 		 'timestamp': str(datetime.now(reql_tz)),
 		 'type':'sensors' 
                 }
